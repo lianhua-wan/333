@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>综合展示网页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tab-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .tab {
+            padding: 10px 30px;
+            background-color: #fff;
+            border: none;
+            border-radius: 5px 5px 0 0;
+            margin: 0 5px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #4e54c8;
+            transition: all 0.3s ease;
+        }
+        
+        .tab.active {
+            background-color: #4e54c8;
+            color: white;
+        }
+        
+        .content-container {
+            display: none;
+            padding: 20px;
+        }
+        
+        .content-container.active {
+            display: block;
+        }
+        
+        /* 书本图4.16样式 */
+        .container {
+            position: relative;
+            width: 800px;
+            height: 600px;
+            margin: 0 auto;
+        }
+        
+        .center-icon {
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff url('1.jpeg') no-repeat center;
+            background-size: cover;
+            border-radius: 50%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 5px solid #4e54c8;
+            z-index: 10;
+            animation: pulse 3s infinite;
+        }
+        
+        .knowledge-card {
+            position: absolute;
+            width: 220px;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .knowledge-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card-html {
+            top: 20%;
+            left: 15%;
+            border-top: 5px solid #e44d26;
+        }
+        
+        .card-css {
+            top: 20%;
+            right: 15%;
+            border-top: 5px solid #264de4;
+        }
+        
+        .card-js {
+            bottom: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-top: 5px solid #f0db4f;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #eee;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-title::before {
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .card-html .card-title::before {
+            background: #e44d26;
+        }
+        
+        .card-css .card-title::before {
+            background: #264de4;
+        }
+        
+        .card-js .card-title::before {
+            background: #f0db4f;
+        }
+        
+        .knowledge-list {
+            list-style-type: none;
+        }
+        
+        .knowledge-list li {
+            padding: 8px 0;
+            color: #555;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .knowledge-list li::before {
+            content: "•";
+            color: #4e54c8;
+            font-size: 20px;
+            position: absolute;
+            left: 0;
+            top: 3px;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(78, 84, 200, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(78, 84, 200, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(78, 84, 200, 0); }
+        }
+        
+        /* 新闻资讯样式 */
+        .news-container {
+            width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .news-header {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .news-hr {
+            border: none;
+            height: 1px;
+            background-color: #ddd;
+            margin-bottom: 30px;
+        }
+        
+        .news-content {
+            display: flex;
+        }
+        
+        .left-column {
+            flex: 2;
+            padding-right: 20px;
+        }
+        
+        .right-column {
+            flex: 1;
+            border-left: 1px solid #eee;
+            padding-left: 20px;
+        }
+        
+        .news-item {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #eee;
+        }
+        
+        .news-item:last-child {
+            border-bottom: none;
+        }
+        
+        .news-title {
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        
+        .news-images {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .news-images img {
+            width: 48%;
+            height: auto;
+            border-radius: 5px;
+        }
+        
+        .author-info {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+        
+        .hot-news {
+            margin-bottom: 20px;
+        }
+        
+        .hot-news a {
+            display: block;
+            color: #e74c3c;
+            text-decoration: none;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .hot-news a:hover {
+            text-decoration: underline;
+        }
+        
+        .hot-news img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>综合展示网页</h1>
+    </div>
+    
+    <div class="tab-container">
+        <button class="tab active" onclick="openTab('knowledge')">知识图谱</button>
+        <button class="tab" onclick="openTab('news')">新闻资讯</button>
+    </div>
+    
+    <!-- 知识图谱内容 -->
+    <div id="knowledge" class="content-container active">
+        <div class="container">
+            <div class="center-icon"></div>
+            
+            <div class="knowledge-card card-html">
+                <h3 class="card-title">HTML核心知识点</h3>
+                <ul class="knowledge-list">
+                    <li>文档结构解析</li>
+                    <li>语义化标签应用</li>
+                    <li>表单与输入控件</li>
+                    <li>多媒体嵌入技术</li>
+                    <li>SEO优化基础</li>
+                </ul>
+            </div>
+            
+            <div class="knowledge-card card-css">
+                <h3 class="card-title">CSS核心技术</h3>
+                <ul class="knowledge-list">
+                    <li>盒模型详解</li>
+                    <li>Flex布局系统</li>
+                    <li>Grid布局方案</li>
+                    <li>动画与过渡效果</li>
+                    <li>响应式设计原则</li>
+                </ul>
+            </div>
+            
+            <div class="knowledge-card card-js">
+                <h3 class="card-title">JavaScript重点</h3>
+                <ul class="knowledge-list">
+                    <li>ES6新特性</li>
+                    <li>DOM操作原理</li>
+                    <li>异步编程模式</li>
+                    <li>事件处理机制</li>
+                    <li>AJAX与Fetch</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 新闻资讯内容 -->
+    <div id="news" class="content-container">
+        <div class="news-container">
+            <h1 class="news-header">今日新闻资讯</h1>
+            <hr class="news-hr">
+            
+            <div class="news-content">
+                <div class="left-column">
+                    <div class="news-item">
+                        <h4 class="news-title">人工智能技术取得重大突破</h4>
+                        <div class="news-images">
+                            <img src="11.webp" alt="AI技术图片1">
+                            <img src="22.webp" alt="AI技术图片2">
+                        </div>
+                        <p class="author-info">作者：科技日报 | 发布时间：2023-06-15</p>
+                        <p>近日，我国科研团队在人工智能领域取得重大突破，开发出新一代深度学习算法...</p>
+                    </div>
+                    
+                    <div class="news-item">
+                        <h4 class="news-title">全球气候变化峰会召开</h4>
+                        <div class="news-images">
+                            <img src="33.webp" alt="气候峰会图片1">
+                            <img src="44.webp" alt="气候峰会图片2">
+                        </div>
+                        <p class="author-info">作者：环境时报 | 发布时间：2023-06-14</p>
+                        <p>第28届全球气候变化峰会在巴黎召开，各国领导人就减排目标达成新共识...</p>
+                    </div>
+                    
+                    <div class="news-item">
+                        <h4 class="news-title">新能源汽车销量创新高</h4>
+                        <div class="news-images">
+                            <img src="55.webp" alt="新能源汽车图片1">
+                            <img src="66.webp" alt="新能源汽车图片2">
+                        </div>
+                        <p class="author-info">作者：汽车周刊 | 发布时间：2023-06-13</p>
+                        <p>5月份我国新能源汽车销量同比增长120%，创历史新高，市场占有率突破30%...</p>
+                    </div>
+                </div>
+                
+                <div class="right-column">
+                    <h4 class="news-title">相关热文推荐</h4>
+                    
+                    <div class="hot-news">
+                        <a href="#">量子计算机研究取得新进展</a>
+                        <img src="77.webp" alt="量子计算机">
+                    </div>
+                    
+                    <div class="hot-news">
+                        <a href="#">央行宣布下调存款准备金率0.5个百分点</a>
+                        <img src="88.webp" alt="央行大楼">
+                    </div>
+                        
+                    <div class="hot-news">
+                        <a href="#">夏季旅游旺季来临，国内热门景点预订量激增</a>
+                        <img src="99.webp" alt="旅游景点">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function openTab(tabName) {
+            // 隐藏所有内容
+            var contents = document.getElementsByClassName("content-container");
+            for (var i = 0; i < contents.length; i++) {
+                contents[i].classList.remove("active");
+            }
+            
+            // 取消所有标签的活动状态
+            var tabs = document.getElementsByClassName("tab");
+            for (var i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove("active");
+            }
+            
+            // 显示选定的内容并激活标签
+            document.getElementById(tabName).classList.add("active");
+            event.currentTarget.classList.add("active");
+        }
+    </script>
+</body>
+</html>
